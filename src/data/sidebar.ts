@@ -2,7 +2,7 @@ export const links = [
     {
         section: "Getting Started", 
         items: [
-            { href: "#intro", label: "Introduction" },
+            { href: "/cubing", label: "Introduction" },
             { href: "#beginner", label: "Learn to Solve the Rubik's Cube" },
             { href: "#notation", label: "Notation Guide"},
         ],
