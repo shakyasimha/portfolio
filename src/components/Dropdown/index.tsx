@@ -2,9 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { links } from "@/data/sidebar";
+// 
+interface DropdownLinkItem {
+    href: string;
+    label: string;
+}
+interface DropdownSection {
+    section: string;
+    items: DropdownLinkItem[];
+}
 
-export default function Dropdown() {
+export default function Dropdown({ links = [] }: { links?: DropdownSection[] }) {
     const [open, setOpen] = useState(false);
     const [active, setActive] = useState("#intro");
     const [mounted, setMounted] = useState(false);

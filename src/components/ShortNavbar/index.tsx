@@ -5,7 +5,20 @@
 import DarkModeButton from "@/components/DarkModeButton";
 import Dropdown from "@/components/Dropdown";
 
-export default function ShortNavbar() {
+interface DropdownLinkItem {
+    href: string;
+    label: string;
+}
+interface DropdownSection {
+    section: string;
+    items: DropdownLinkItem[];
+}
+interface ShortNavbarProps {
+    title: string; 
+    dropdownLinks?: DropdownSection[];
+}
+
+export default function ShortNavbar({ title, dropdownLinks } : ShortNavbarProps) {
     return (
         <nav className="fixed inset-x-0 top-0 z-20 h-16 bg-white/95 shadow-sm backdrop-blur-md dark:bg-slate-900/95">
             <div className="relative flex h-full items-center">
@@ -22,7 +35,7 @@ export default function ShortNavbar() {
                     md:ml-8
                     text-center text-lg md:text-2xl font-bold
                 ">
-                    Sushovan's Cubing Archive
+                    {title}
                 </div>
 
                 {/* Desktop dark mode button (right) */}
@@ -32,7 +45,7 @@ export default function ShortNavbar() {
 
                 {/* Mobile dropdown (right) */}
                 <div className="absolute right-4 flex items-center md:hidden">
-                    <Dropdown />
+                    <Dropdown links={dropdownLinks} />
                 </div>
 
             </div>

@@ -3,13 +3,14 @@
 import { useState } from "react";
 import ShortNavbar from "@/components/ShortNavbar";
 import Sidebar from "@/components/Sidebar";
+import { links } from "@/data/sidebar";
 
 export default function Cubing() {
     const [active, setActive] = useState("#intro");
 
     return (
         <div className="flex flex-col">
-            <ShortNavbar />
+            <ShortNavbar title="Sushovan's Cubing Archive" dropdownLinks={links} />
             <div className="flex mt-16">
                 <Sidebar active={active} setActive={setActive} />
                 <div className="flex-1 p-8">

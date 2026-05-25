@@ -46,6 +46,14 @@ export const postType = defineType({
       name: 'publishedAt',
       type: 'datetime',
     }),
+    // Short caption shown on blog cards
+    defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+      rows: 3,
+      description: 'A short summary shown on the blog listing card.',
+    }),
     defineField({
       name: 'body',
       type: 'blockContent',
