@@ -8,6 +8,16 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  const { getAllPosts } = await import("@/sanity/lib/queries");
+  const posts = await getAllPosts();
+
+  // Return an array of slug objects matching your params structure
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -56,7 +66,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Medium-style Author & Meta Info Bar */}
         <div className="mt-8 mb-10 flex items-center gap-3 border-y border-slate-100 dark:border-slate-800/60 py-4">
           {/* Avatar Placeholder */}
-          <div className="h-11 w-11 rounded-full bg-slate-200 dark:bg-slate-700 flex-shrink-0 overflow-hidden relative">
+          <div className="h-11 w-11 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0 overflow-hidden relative">
             {/* If you have a profile picture, swap this div out for a Next.js <Image /> */}
             <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs font-bold bg-slate-100 dark:bg-slate-800">
               SS
@@ -76,7 +86,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Featured Image */}
-        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800 mb-12">
+        <div className="relative aspect-16/10 w-full overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800 mb-12">
           <Image
             src={imageUrl}
             alt={post.mainImage ? (post.mainImageAlt || post.title) : "Blog banner"}
