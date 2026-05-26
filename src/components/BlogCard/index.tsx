@@ -10,7 +10,7 @@ interface BlogCardProps {
   title: string;
   excerpt: string;
   publishedAt: string;
-  mainImage: SanityImageSource;
+  mainImage: SanityImageSource | null; // 👈 Updated type to explicitly handle null
   mainImageAlt: string;
 }
 
@@ -30,8 +30,11 @@ export default function BlogCard({
 
   const generatedUrl = mainImage ? urlFor(mainImage).width(800).height(450).url() : null;
 
-  // Ensure that if the generated URL is empty (""), it forces the generic fallback string instead
-  const imageUrl = generatedUrl || "/blog-placeholder.png";
+  // 🛡️ Safe Base64 SVG Placeholder string
+  // This bypasses middleware bugs entirely because it is treated as a text string data source, not a file!
+  const fallbackPlaceholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' font-family='sans-serif' font-size='24' fill='%2394a3b8' text-anchor='middle' dominant-baseline='middle'>No Image Available</text></svg>";
+
+  const imageUrl = generatedUrl || fallbackPlaceholder;
 
   return (
     <Link href={`/blog/${slug}`} className="group block">
@@ -48,10 +51,11 @@ export default function BlogCard({
         <div className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-700">
           <Image
             src={imageUrl}
-            alt={mainImageAlt || title}
+            alt={mainImage ? (mainImageAlt || title) : "Placeholder image"}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            unoptimized={!mainImage} // 👈 Tells Next.js not to try and run optimization routines on the SVG string
           />
         </div>
 
