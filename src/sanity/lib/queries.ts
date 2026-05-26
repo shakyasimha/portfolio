@@ -21,13 +21,32 @@ export interface BlogPost {
 
 export async function getAllPosts(): Promise<BlogPost[]> {
   return client.fetch(`
-    *[_type == "post"] | order(publishedAt desc) {
+      *[_type == "post"] | order(publishedAt desc) {
+          "slug": slug.current,
+          title,
+          excerpt,
+          publishedAt,
+          // 👇 If mainImage exists, fetch it; otherwise return null
+          "mainImage": select(defined(mainImage) => mainImage, null), 
+          "mainImageAlt": mainImage.alt
+      }
+  `);
+}
+
+export interface FullBlogPost extends BlogPost {
+  body?: any; 
+}
+
+export async function getPostBySlug(slug: string): Promise<FullBlogPost | null> {
+  return client.fetch(`
+    *[_type == "post" && slug.current == $slug][0] {
       "slug": slug.current,
       title,
       excerpt,
       publishedAt,
-      mainImage,
-      "mainImageAlt": mainImage.alt
+      "mainImage": select(defined(mainImage) => mainImage, null),
+      "mainImageAlt": mainImage.alt,
+      body 
     }
-  `);
+  `, { slug });
 }

@@ -28,7 +28,10 @@ export default function BlogCard({
     day: "numeric",
   });
 
-  const imageUrl = urlFor(mainImage).width(800).height(450).url();
+  const generatedUrl = mainImage ? urlFor(mainImage).width(800).height(450).url() : null;
+
+  // Ensure that if the generated URL is empty (""), it forces the generic fallback string instead
+  const imageUrl = generatedUrl || "/blog-placeholder.png";
 
   return (
     <Link href={`/blog/${slug}`} className="group block">
