@@ -10,7 +10,7 @@ interface BlogCardProps {
   title: string;
   excerpt: string;
   publishedAt: string;
-  mainImage: SanityImageSource | null; // 👈 Updated type to explicitly handle null
+  mainImage: SanityImageSource | null;
   mainImageAlt: string;
 }
 
@@ -30,9 +30,8 @@ export default function BlogCard({
 
   const generatedUrl = mainImage ? urlFor(mainImage).width(800).height(450).url() : null;
 
-  // 🛡️ Safe Base64 SVG Placeholder string
-  // This bypasses middleware bugs entirely because it is treated as a text string data source, not a file!
-  const fallbackPlaceholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' font-family='sans-serif' font-size='24' fill='%2394a3b8' text-anchor='middle' dominant-baseline='middle'>No Image Available</text></svg>";
+  // 🛡️ Safe Base64 SVG Placeholder
+  const fallbackPlaceholder = "/blog-placeholder.png";
 
   const imageUrl = generatedUrl || fallbackPlaceholder;
 
@@ -47,7 +46,7 @@ export default function BlogCard({
         hover:shadow-xl hover:shadow-slate-200/60 dark:hover:shadow-black/40
         hover:border-slate-300 dark:hover:border-slate-500
       ">
-        {/* Cover image */}
+        {/* 🛠️ FIXED aspect-video container */}
         <div className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-700">
           <Image
             src={imageUrl}
@@ -55,43 +54,23 @@ export default function BlogCard({
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            unoptimized={!mainImage} // 👈 Tells Next.js not to try and run optimization routines on the SVG string
+            unoptimized={!mainImage} 
           />
         </div>
 
-        {/* Content */}
         <div className="flex flex-col gap-2 p-5">
           <time className="text-xs font-medium tracking-widest uppercase text-slate-400 dark:text-slate-500">
             {formatted}
           </time>
-
-          <h2 className="
-            text-base font-semibold leading-snug line-clamp-2
-            text-slate-900 dark:text-white
-            group-hover:text-slate-600 dark:group-hover:text-slate-200
-            transition-colors
-          ">
+          <h2 className="text-base font-semibold leading-snug line-clamp-2 text-slate-900 dark:text-white group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors">
             {title}
           </h2>
-
           <p className="text-sm leading-relaxed line-clamp-3 text-slate-500 dark:text-slate-400">
             {excerpt}
           </p>
-
-          <span className="
-            mt-1 flex items-center gap-1
-            text-xs font-medium
-            text-slate-400 dark:text-slate-500
-            group-hover:text-slate-700 dark:group-hover:text-white
-            transition-colors
-          ">
+          <span className="mt-1 flex items-center gap-1 text-xs font-medium text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-white transition-colors">
             Read more
-            <svg
-              className="h-3 w-3 translate-x-0 transition-transform group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="h-3 w-3 translate-x-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </span>
