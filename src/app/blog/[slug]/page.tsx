@@ -95,13 +95,12 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* Blog Post Core Content Body */}
         <div className="
-          prose prose-slate dark:prose-invert max-w-none 
-          font-serif text-lg md:text-xl leading-relaxed text-slate-800 dark:text-slate-200
-          prose-p:text-justify font-normal
+          prose prose-slate dark:prose-invert max-w-none
+          font-serif text-lg md:text-xl text-slate-800 dark:text-slate-200
           prose-headings:font-sans prose-headings:font-bold prose-headings:tracking-tight
           prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-4
-          prose-p:mb-12 prose-p:leading-[1.65]
           prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-a:underline-offset-4
+          [&_p]:mb-6 [&_p]:leading-[1.65] [&_p]:text-justify
         ">
           {post.body ? (
               <PortableText value={post.body} />
